@@ -1,1 +1,285 @@
-/home/vergil/Profiles/software/vimperator_ff4/vimperatorrc_ff4
+"""""""""""""""""""""""""""""""""""""""""""""""
+""  VimperatorRC File Created By Gefenbauer  ""
+""      Just for Vimperator 3.0.* Only       ""
+"""""""""""""""""""""""""""""""""""""""""""""""
+"
+"""""""""""""""""""""""""""""""""""""""
+""  Global Variables - 环境变量设置  ""
+"""""""""""""""""""""""""""""""""""""""
+"
+"" twittperator.js
+""let g:twittperator_use_chirp = 1 
+let g:twittperator_history_limit = 50
+let g:twittperator_screen_name = "1wingedangel"
+let g:twlist_auto_popup = 1
+let g:twlist_popup_time = 5
+let g:twittperator_plugin_reply_popup_alert = 1
+let g:twittperator_plugin_reply_popup_alert_username = "1wingedangel"
+"" nextlink.js
+let g:nextlink_followlink = "true"
+let g:nextlink_nositeinfo_act = "f"
+"" Copy Template for copy.js - copy.js的复制模板
+javascript <<EOM
+liberator.globalVariables.copy_templates = [
+  { label: 'titleAndURL',    value: '%TITLE%\n%URL%',map: ',a' },
+  { label: 'title',          value: '%TITLE%', map: ',t' },
+  { label: 'anchor',         value: '<a href="%URL%">%TITLE%</a>' },
+  { label: 'selanchor',      value: '<a href="%URL%" title="%TITLE%">%SEL%</a>' },
+  { label: 'htmlblockquote', value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
+  { label: 'wiki',           value: '[%URL% %TITLE%]',map: ',w' },
+  ];
+EOM
+"" Template & Settings for multi_requester.js - multi_requester的模板以及设置
+javascript <<EOF
+/* DEFAULT SITES */
+liberator.globalVariables.multi_requester_default_sites = "alc,goo,favotter-new,twitter-search-pcod-no-jp,search-twitter,wikipedia-jp"
+/* SITE_INFO */
+liberator.globalVariables.multi_requester_siteinfo = [
+    {
+        name:           'favotter-new',
+        description:    'favotter newest',
+        url:            'http://favotter.matope.com/user.php?user=%s',
+        xpath:          '//div[@class="entry xfolkentry hentry  "]',
+    },
+    {
+        name:           'twitter-search-pcod-no-jp',
+        description:    'twitter search(yats)',
+        url:            'http://pcod.no-ip.org/yats/search?query=%s',
+        xpath:          '//li[@class="hentry"]',
+    },
+    {
+        name:           'wikipedia-jp',
+        description:    'wikipedia(japanese)',
+        url:            'http://ja.wikipedia.org/wiki/%s',
+        xpath:          'id("bodyContent")',
+    },
+    {
+        name:           'search-twitter',
+        description:    'twitter search(search.twitter.com)',
+        url:            'http://search.twitter.com/search?q=%s',
+        xpath:          'id("results")/ul/li',
+    },
+    {
+        name:           'gdicen-cn',
+        description:    'Google Dictionary en-cn',
+        url:            'http://www.google.com/dictionary?aq=f&langpair=en|zh-CN&q=%s&hl=en',
+        xpath:          'id("pr-root")',
+    },
+];
+/* KEY MAPPING */
+liberator.globalVariables.multi_requester_mappings = [
+	[',mt', 'twitter-search-pcod-no-jp'],
+	[',Mt', 'twitter-search-pcod-no-jp', '!'],
+	[',mT', 'twitter-search-pcod-no-jp',    , '1wingedangel'],
+	[',MT', 'twitter-search-pcod-no-jp', '!', '1wingedangel'],
+	[',mf', 'favotter-new'],
+	[',Mf', 'favotter-new', '!'],
+	[',mF', 'favotter-new',    ,'1wingedangel'],
+	[',MF', 'favotter-new', '!', '1wingedangel'],
+	[',ma', 'alc'],
+	[',Ma', 'alc', '!'],
+	[',mg', 'goo'],
+	[',Mg', 'goo', '!'],
+	[',mw', 'wikipedia-jp'],
+	[',Mw', 'wikipedia-jp', '!']
+	[',mc', 'gdicen-cn']
+];
+EOF
+"
+"""""""""""""""""""""""""""""""
+""  Load Plugins - 加载插件  ""
+"""""""""""""""""""""""""""""""
+"
+"" Load Plugins from folder - 从plugin目录加载插件
+loadplugins
+"" Load Hatena Bookmark Plugin - 加载HatenaBookmark的内置插件
+javascript if (typeof hBookmark != 'undefined') liberator.loadScript('chrome://hatenabookmark/content/vimperator/plugin/hatenabookmark.js', {__proto__: this});
+js document.getElementById("appmenu-toolbar-button").label = "獄門ブラウザ"
+"
+"""""""""""""""""""""""""""""""""
+""  Basic Settings - 基本设置  ""
+"""""""""""""""""""""""""""""""""
+"
+"" -- Appearance - 外观设定 -- 
+"
+colorscheme myzenburn
+set titlestring="Vimperator"
+set verbose=1
+set maxitems=10
+set toolbars=none,tabs
+set tabnumbers
+set noscrollbars
+set status-=location
+set showstatuslinks=0
+set wildmode=list:full
+set visualbell
+set hintchars=VCXZDSAEWQ
+" Fix the Complete Description Problem - 修正补全项过长导致的描述无法显示的问题
+hi CompResult -a -moz-binding: url(chrome://liberator/content/bindings.xml#compitem-td);
+hi CompDesc -a -moz-binding: url(chrome://liberator/content/bindings.xml#compitem-td);
+"
+"" -- Detail Settings - 细节设定 -- 
+"
+set focuscontent
+set editor="gvim -f"
+set nextpattern=\s*下一页|下一张|下一篇|下页|后页\s*,^\bnext\b,\\bnext\\b,^>$,^(>>|»)$,^(>|»),(>|»)$,\\bmore\\b
+set previouspattern=\s*上一页|上一张|上一篇|上页|前页\s*,^\bprev|previous\b,\\bprev|previous\\b,^<$,^(<<|«)$,^(<|«),(<|«)$
+set! ui.key.generalAccessKey=0
+"
+"""""""""""""""""""""""""""""""
+""  Key Mappings - 键盘映射  ""
+"""""""""""""""""""""""""""""""
+"
+"" -- Basic Operations - 基本操作 -- 
+"
+" Panorama Mode - Panorama模式快速启动
+noremap <C-e> i<C-S-e>
+" Ignore PageDown/PageUp Keymapping - 忽略翻页映射而使用FF默认平滑滚动
+nnoremap <PageDown> i<PageDown>
+nnoremap <PageUp> i<PageUp>
+" Quick-switch Tabs - 快速切换标签
+noremap q gT
+noremap w gt
+" Paste URL & Open in new Tabs - 把剪贴板的URL贴至新标签上
+noremap pp P
+" Hint Mode for Yank URL - 直接进入拷URL的HintMode
+map <C-c> ;y
+" Stop Loading - 取消载入
+map <C-d> :stop<CR>
+" Show the Default Toolbar - 显示地址栏菜单栏搜索栏
+map <C-Up> :set toolbars=all,noaddons<CR>
+" Hide the Default Toolbar - 隐藏地址栏菜单栏搜索栏
+map <C-Down> :set toolbars=none,tabs<CR>
+" Show Sidebar Completion - 呼出侧边栏列表
+map S :sidebar<space>
+" Show Menu Completion - 呼出菜单栏列表
+map V :emenu<space>
+" Show Undo Completion - 呼出撤销列表
+map U :u<space>
+" Show Bookmarks - 快速调用书签
+noremap bn :bmarks<space>
+" Show History - 快速调用历史
+noremap bh :history<space>
+"
+"" -- Left-Hand Operations - 左手操作特化键盘映射 --
+"
+" Move jk to sa - 把jk映射至sa
+map a k
+map s j
+" xz/xc to Back/Forward - xz xc 该标签历史回溯
+map xz :ba<space>
+map xc :fo<space>
+" Next/Previous Pages - 翻页
+noremap eq [[
+noremap ew ]]
+"
+"" -- Commands Expansion - 命令扩展强化 --
+"
+" For Tabopen:
+" map tt to t - 把原来的t映射到tt
+map tt :tabopen<space>
+" for google search (English，Chinese，Japanese，I'm Feeling Lucky, History Search)
+map tgg :tabopen<space>google<space>
+map tgc :tabopen<space>;googlecn<space>
+map tgj :tabopen<space>;googlejp<space>
+map tgl :tabopen<space>;lck<space>
+map tgh :tabopen<space>;hi<space>
+" for Wikipedia
+map tw :tabopen<space>;wiki<space>
+" for Addons.Mozilla.Org
+map tf :tabopen<space>;ff<space>
+" 
+" Paste to Specified Sites - 把选中的URL直接跳转至新标签
+noremap po YP
+noremap pj Y:tabopen<space>;googlejp<space><C-v><CR>
+noremap pw Y:tabopen<space>;wiki<space><C-v><CR>
+noremap pc Y:tabopen<space>;googlecn<space><C-v><CR>
+" Basic Operations Alternative for feedsomekey.js - 解决feedsomekey.js导致的部分键盘映射失效问题
+map et :tabopen<space>
+map eo :open<space>
+map ed :bd<CR>
+map er :reload<CR>
+map eR :reload!<CR>
+map ef ;o
+map eF ;t
+map eu :u<CR>
+"
+"" -- Other Advanced Optimizations - 其他高级设置 --
+"
+" Switch Encodings - 切换页面编码
+noremap ,es :set encoding=Shift_JIS<CR>
+noremap ,ec :set encoding=EUC-JP<CR>
+noremap ,eu :set encoding=UTF-8<CR>
+noremap ,eg :set encoding=GB2312<CR>
+" Buffer Settings - Buffer快速打开特定网站
+noremap bm :buffer! gmail<CR>
+noremap br :buffer! google reader<CR>
+noremap bt :buffer! tabtter<CR>
+noremap bd :buffer! mldonkey<CR>
+noremap bg :buffer! remember the milk<CR>
+" twitterator.js
+noremap <leader>tt :tw<space>
+noremap <leader>tr :tw<CR>
+noremap <leader>ta :tw @
+noremap <leader>ty :tw!
+" panorama.js
+noremap <C-w>d :panorama remove<CR>
+noremap <C-w><C-w> :panorama switch<space>
+noremap <C-w>s :panorama stash<space>
+noremap <C-w><C-q> :panorama pin<CR>
+noremap <C-w>a :panorama pulltab<space>
+noremap <C-w>w :panorama<space>
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""
+""  Autocommand Settings - 开机自启动脚本设置  ""
+"""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" Simplify the commands - 开机自启动脚本简化
+command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
+" Fix the Height Limit of MOW - 修正MOW的显示高度
+lazy js document.getElementById("liberator-multiline-output").parentNode.maxHeight=content.innerHeight/2 + "px"
+" Fix the Completion BUG - 修正补全BUG
+js CommandLine.Completions.prototype.__defineGetter__('caret', function() commandline._commandWidget.selectionEnd)
+" Complete Settings
+lazy set complete=tslH
+"
+"" -- feedSomeKeys_3.js Settings --
+"
+" Gmail
+lazy fmaps -u='^https?://mail\.google\.com/(mail|a)/' c / j k n m,p o u x s r a # l U I [ ] N z ? gi gs gt gd ga gc gb gk gl *a *n *r *u *s *t y e  
+" Google Reader
+lazy fmaps -u='www\.google\.com/reader' -events=vkeypress j k J K <Space> <S-Space> n m,p N P X O s D v gh ga gs gS gu gt gT gd gf gF gc ge gp r u 1 2 / a t T A o f
+" New Twitter
+lazy fmaps -u='twitter\.com/' j k / . ?
+lazy fmaps -u='twitter\.com/' -events=vkeydown m n gf gr gp gh gm gu 
+lazy fmaps -u='twitter\.com/' -events=vkeypress r t f 
+" Remember the milk
+lazy fmaps -u='rememberthemilk\.com' -events=keypress j k tt,t y,c c,y pu,1 pi,2 po,3 pp,4 <Del> x,i h H,<C-S-Left> L,<C-S-Right>
+" Twicli
+lazy fmaps -u='.*twicli\.html' -events=keypress n,j m,k x tt,m z,<esc> f o,i u r,e pp,p R,r T,q c,d v,o
+" tabtter
+lazy fmaps -u='tabtter\.jp' -events=vkeydown n,k m,j h M,m tt,n . C u /
+"
+"" -- Open Link Background in Specified Sites - 特定网站上打开网址默认后台打开 --
+"
+autocmd LocationChange '^(?!https?://(mail\.google\.com/(mail|a)/|(reader\.livedoor|fastladder|www\.google)\.com/reader/|b\.hatena\.ne\.jp/(?!(entry|articles|guide))))' :set! browser.tabs.loadDivertedInBackground=false
+autocmd LocationChange '^https?://(mail\.google\.com/(mail|a)/|(reader\.livedoor|fastladder|www\.google)\.com/reader/|b\.hatena\.ne\.jp/(?!(entry|articles|guide)))' :set! browser.tabs.loadDivertedInBackground=true
+""autocmd LocationChange .* :set toolbars=none
+"
+"" -- Qmarks Settings - 快速打开 --
+"
+qmark t http://twitter.com
+qmark m https://mail.google.com
+qmark r https://www.google.com/reader
+qmark d http://127.0.0.1:4080
+qmark v https://github.com/vimpr/vimperator-plugins
+qmark u http://www.tumblr.com/dashboard
+qmark g http://www.rememberthemilk.com
+
+"" -- Abbreviation Settings - 热字符串切换 --
+"
+abbrev -j .title      '"' + buffer.title + '"'
+abbrev -j .brbr        plugins.haneru.getc(buffer.URL)[0]
+abbrev -j .tb         abbreviations.get(modes.INSERT, '.title').text + ' - ' + plugins.haneru.getc(buffer.URL)[0]
+"
+" vim: set ft=vimperator:
