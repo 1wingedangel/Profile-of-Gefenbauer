@@ -264,6 +264,9 @@ autocmd LocationChange '^(?!https?://(mail\.google\.com/(mail|a)/|(reader\.lived
 autocmd LocationChange '^https?://(mail\.google\.com/(mail|a)/|(reader\.livedoor|fastladder|www\.google)\.com/reader/|b\.hatena\.ne\.jp/(?!(entry|articles|guide)))' :set! browser.tabs.loadDivertedInBackground=true
 ""autocmd LocationChange .* :set toolbars=none
 "
+"" -- Command Settings - 自定义命令 --
+"
+command! -nargs=+ swbuftwitter map vt :buffer! <args><CR>
 "" -- Qmarks Settings - 快速打开 --
 "
 qmark t http://twitter.com
