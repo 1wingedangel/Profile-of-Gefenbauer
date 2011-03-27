@@ -106,10 +106,10 @@ colorscheme myzenburn
 set titlestring="Vimperator"
 set verbose=1
 set maxitems=10
-set toolbars=none,tabs
+set toolbars=none,tabs,statuslinetoolbar
 set tabnumbers
 set noscrollbars
-set status-=location
+"set status-=location
 set showstatuslinks=0
 set wildmode=list:full
 set visualbell
@@ -212,11 +212,9 @@ noremap ,ec :set encoding=EUC-JP<CR>
 noremap ,eu :set encoding=UTF-8<CR>
 noremap ,eg :set encoding=GB2312<CR>
 " Buffer Settings - Buffer快速打开特定网站
-noremap bm :buffer! gmail<CR>
-noremap br :buffer! google reader<CR>
-noremap bt :buffer! tabtter<CR>
-noremap bd :buffer! mldonkey<CR>
-noremap bg :buffer! remember the milk<CR>
+noremap vm :buffer! gmail<CR>
+noremap vr :buffer! google reader<CR>
+noremap vt :buffer! tabtter<CR>
 " twitterator.js
 noremap <leader>tt :tw<space>
 noremap <leader>tr :tw<CR>
