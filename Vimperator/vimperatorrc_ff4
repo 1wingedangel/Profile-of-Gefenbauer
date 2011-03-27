@@ -157,9 +157,9 @@ map V :emenu<space>
 " Show Undo Completion - 呼出撤销列表
 map U :u<space>
 " Show Bookmarks - 快速调用书签
-noremap bn :bmarks<space>
+noremap vn :bmarks<space>
 " Show History - 快速调用历史
-noremap bh :history<space>
+noremap vh :history<space>
 "
 "" -- Left-Hand Operations - 左手操作特化键盘映射 --
 "
