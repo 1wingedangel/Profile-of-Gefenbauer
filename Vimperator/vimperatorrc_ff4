@@ -190,10 +190,10 @@ map tw :tabopen<space>;wiki<space>
 map tf :tabopen<space>;ff<space>
 " 
 " Paste to Specified Sites - 把选中的URL直接跳转至新标签
-noremap po YP
-noremap pj Y:tabopen<space>;googlejp<space><C-v><CR>
-noremap pw Y:tabopen<space>;wiki<space><C-v><CR>
-noremap pc Y:tabopen<space>;googlecn<space><C-v><CR>
+noremap po P
+noremap <silent> pj :exe ":tabopen ;googlejp " + getBrowserSelection()<CR>
+noremap <silent> pw :exe ":tabopen ;wiki " + getBrowserSelection()<CR>
+noremap <silent> pc :exe ":tabopen ;googlecn " + getBrowserSelection()<CR>
 " Basic Operations Alternative for feedsomekey.js - 解决feedsomekey.js导致的部分键盘映射失效问题
 map et :tabopen<space>
 map eo :open<space>
@@ -283,5 +283,6 @@ qmark g http://www.rememberthemilk.com
 abbrev -j .title      '"' + buffer.title + '"'
 abbrev -j .brbr        plugins.haneru.getc(buffer.URL)[0]
 abbrev -j .tb         abbreviations.get(modes.INSERT, '.title').text + ' - ' + plugins.haneru.getc(buffer.URL)[0]
+abbrev -j .sel 		  getBrowserSelection()
 "
 " vim: set ft=vimperator:
