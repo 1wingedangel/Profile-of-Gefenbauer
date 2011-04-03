@@ -283,6 +283,6 @@ qmark g http://www.rememberthemilk.com
 abbrev -j .title      '"' + buffer.title + '"'
 abbrev -j .brbr        plugins.haneru.getc(buffer.URL)[0]
 abbrev -j .tb         abbreviations.get(modes.INSERT, '.title').text + ' - ' + plugins.haneru.getc(buffer.URL)[0]
-abbrev -j .sel 		  getBrowserSelection()
+abbrev -j .sel 		  '"' + getBrowserSelection() + '"'
 "
 " vim: set ft=vimperator:
