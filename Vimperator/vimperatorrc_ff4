@@ -92,9 +92,14 @@ EOF
 "
 "" Load Plugins from folder - 从plugin目录加载插件
 loadplugins
+so ~/.vimperator/plugin/_libly.js
 "" Load Hatena Bookmark Plugin - 加载HatenaBookmark的内置插件
 javascript if (typeof hBookmark != 'undefined') liberator.loadScript('chrome://hatenabookmark/content/vimperator/plugin/hatenabookmark.js', {__proto__: this});
-js document.getElementById("appmenu-toolbar-button").label = "獄門ブラウザ"
+"" Customize the Firefox Button - 修改Firefox按钮的文本`
+js document.getElementById("appmenu-toolbar-button").label = "獄門ブラウザ";
+"" Move the addon bar to statusline - Addonsbar移动至状态栏
+js document.getElementById("liberator-status-toolbar").appendChild(document.getElementById("status-bar"));
+
 "
 """""""""""""""""""""""""""""""""
 ""  Basic Settings - 基本设置  ""
@@ -106,7 +111,7 @@ colorscheme vimpwhite
 set titlestring="Vimperator"
 set verbose=1
 set maxitems=10
-set toolbars=none,statuslinetoolbar
+set toolbars=none
 set tabnumbers
 set noscrollbars
 "set status-=location
@@ -149,7 +154,7 @@ map <C-d> :stop<CR>
 " Show the Default Toolbar - 显示地址栏菜单栏搜索栏
 map <C-Up> :set toolbars=all,noaddons<CR>
 " Hide the Default Toolbar - 隐藏地址栏菜单栏搜索栏
-map <C-Down> :set toolbars=none,statuslinetoolbar<CR>
+map <C-Down> :set toolbars=none<CR>
 " Show Sidebar Completion - 呼出侧边栏列表
 map S :sidebar<space>
 " Show Menu Completion - 呼出菜单栏列表
@@ -191,9 +196,9 @@ map tf :tabopen<space>;ff<space>
 " 
 " Paste to Specified Sites - 把选中的URL直接跳转至新标签
 noremap po P
-noremap <silent> pj :exe ":tabopen ;googlejp " + getBrowserSelection()<CR>
-noremap <silent> pw :exe ":tabopen ;wiki " + getBrowserSelection()<CR>
-noremap <silent> pc :exe ":tabopen ;googlecn " + getBrowserSelection()<CR>
+noremap pj :exe ":tabopen ;googlejp " + content.getSelection()<CR>
+noremap pw :exe ":tabopen ;wiki " + content.getSelection()<CR>
+noremap pc :exe ":tabopen ;googlecn " + content.getSelection()<CR>
 " Basic Operations Alternative for feedsomekey.js - 解决feedsomekey.js导致的部分键盘映射失效问题
 map et :tabopen<space>
 map eo :open<space>
@@ -228,6 +233,10 @@ noremap <C-w>s :panorama stash<space>
 noremap <C-w><C-q> :panorama pin<CR>
 noremap <C-w>a :panorama pulltab<space>
 noremap <C-w>w :panorama<space>
+" SBMcommentsViewer.js
+map <silent> ,bh :viewSBMComments -t h<CR>
+map <silent> ,bd :viewSBMComments -t d<CR>
+map <silent> ,bl :viewSBMComments -t l<CR>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""
 ""  Autocommand Settings - 开机自启动脚本设置  ""
@@ -236,9 +245,9 @@ noremap <C-w>w :panorama<space>
 " Simplify the commands - 开机自启动脚本简化
 command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
 " Fix the Height Limit of MOW - 修正MOW的显示高度
-lazy js document.getElementById("liberator-multiline-output").parentNode.maxHeight=content.innerHeight/2 + "px"
+"lazy js document.getElementById("liberator-multiline-output").parentNode.maxHeight=content.innerHeight/2 + "px"
 " Fix the Completion BUG - 修正补全BUG
-js CommandLine.Completions.prototype.__defineGetter__('caret', function() commandline._commandWidget.selectionEnd)
+"js CommandLine.Completions.prototype.__defineGetter__('caret', function() commandline._commandWidget.selectionEnd)
 " Complete Settings
 lazy set complete=tslH
 "
@@ -283,6 +292,6 @@ qmark g http://www.rememberthemilk.com
 abbrev -j .title      '"' + buffer.title + '"'
 abbrev -j .brbr        plugins.haneru.getc(buffer.URL)[0]
 abbrev -j .tb         abbreviations.get(modes.INSERT, '.title').text + ' - ' + plugins.haneru.getc(buffer.URL)[0]
-abbrev -j .sel 		  '"' + getBrowserSelection() + '"'
+abbrev -j .sel 		  '"' + content.getSelection() + '"'
 "
 " vim: set ft=vimperator:
