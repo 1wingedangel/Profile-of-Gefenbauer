@@ -7,14 +7,30 @@
 ""  Global Variables - 环境变量设置  ""
 """""""""""""""""""""""""""""""""""""""
 "
+"" Google + Commando.js
+let g:gplus_commando_map_next            = "j"
+let g:gplus_commando_map_prev            = "k"
+let g:gplus_commando_map_share           = "r"
+let g:gplus_commando_map_plusone         = "p"
+let g:gplus_commando_map_comment         = "c"
+let g:gplus_commando_map_post            = "C"
+let g:gplus_commando_map_yank            = "y"
+let g:gplus_commando_map_notification    = "n"
+let g:gplus_commando_map_cancel          = "<Esc>"
+let g:gplus_commando_map_unfold          = "x"
+let g:gplus_commando_map_submit          = "<S-CR>"
+let g:gplus_commando_map_menu            = "m"
+"" Readitlater.js
+let g:readitlater_api_key = "cF1gFw3cpd274Vo7f4T3e86I68AbH0g8"
 "" twittperator.js
 let g:twittperator_use_chirp = 1 
 let g:twittperator_history_limit = 50
-let g:twittperator_screen_name = "1wingedangel"
+let g:twittperator_screen_name = "dunkelsvL"
 let g:twlist_auto_popup = 1
 let g:twlist_popup_time = 5
 let g:twittperator_plugin_reply_popup_alert = 1
-let g:twittperator_plugin_reply_popup_alert_username = "1wingedangel"
+let g:twittperator_plugin_reply_popup_alert_username = "dunkelsvL"
+let g:twittperator_plugin_add_url_completer = 1
 "" nextlink.js
 let g:nextlink_followlink = "true"
 let g:nextlink_nositeinfo_act = "f"
@@ -29,6 +45,18 @@ liberator.globalVariables.copy_templates = [
   { label: 'wiki',           value: '[%URL% %TITLE%]',map: ',w' },
   ];
 EOM
+"" 去除3.2开始出现的autocmd信息弹出
+javascript <<EOM
+let (original = liberator.echomsg)
+  liberator.echomsg = function (msg) {
+    const REAC = RegExp('@chrome://liberator/content/autocommands\\.js:\\d+');
+    if (Error().stack.split(/\n/).some(RegExp.prototype.test.bind(REAC)) && /Executing .* Auto commands for .*/.test(msg))
+      liberator.log(msg);
+    else
+      original.apply(liberator, arguments);
+  };
+EOM
+
 "" Template & Settings for multi_requester.js - multi_requester的模板以及设置
 javascript <<EOF
 /* DEFAULT SITES */
@@ -63,7 +91,13 @@ liberator.globalVariables.multi_requester_siteinfo = [
         name:           'gdicen-cn',
         description:    'Google Dictionary en-cn',
         url:            'http://www.google.com/dictionary?aq=f&langpair=en|zh-CN&q=%s&hl=en',
-        xpath:          'id("pr-root")',
+        xpath:          '//DIV[@class="dct-srch-rslt"]',
+    },
+    {
+        name:           'gdiccn-en',
+        description:    'Google Dictionary cn-en',
+        url:            'http://www.google.com/dictionary?aq=f&langpair=zh-CN|en&q=%s&hl=en',
+        xpath:          '//DIV[@class="dct-srch-rslt"]',
     },
 ];
 /* KEY MAPPING */
@@ -82,7 +116,8 @@ liberator.globalVariables.multi_requester_mappings = [
 	[',Mg', 'goo', '!'],
 	[',mw', 'wikipedia-jp'],
 	[',Mw', 'wikipedia-jp', '!']
-	[',mc', 'gdicen-cn']
+	[',me', 'gdicen-cn']
+	[',mc', 'gdiccn-en']
 ];
 EOF
 "
@@ -93,6 +128,7 @@ EOF
 "" Load Plugins from folder - 从plugin目录加载插件
 loadplugins
 so ~/.vimperator/plugin/_libly.js
+so ~/.vimperator/plugin/feedSomeKeys_3.js
 "" Load Hatena Bookmark Plugin - 加载HatenaBookmark的内置插件
 javascript if (typeof hBookmark != 'undefined') liberator.loadScript('chrome://hatenabookmark/content/vimperator/plugin/hatenabookmark.js', {__proto__: this});
 "" Customize the Firefox Button - 修改Firefox按钮的文本`
@@ -155,8 +191,9 @@ map <C-d> :stop<CR>
 map <C-Up> :set toolbars=all,noaddons<CR>
 " Hide the Default Toolbar - 隐藏地址栏菜单栏搜索栏
 map <C-Down> :set toolbars=none<CR>
-" Show Sidebar Completion - 呼出侧边栏列表
-map S :sidebar<space>
+" Show/Hide Sidebar Completion - 呼出/隐藏侧边栏列表
+map Ss :sidebar<space>
+map SS :sbclose<CR>
 " Show Menu Completion - 呼出菜单栏列表
 map V :emenu<space>
 " Show Undo Completion - 呼出撤销列表
@@ -195,7 +232,7 @@ map tw :tabopen<space>;wiki<space>
 map tf :tabopen<space>;ff<space>
 " 
 " Paste to Specified Sites - 把选中的URL直接跳转至新标签
-noremap po P
+noremap po YP
 noremap pj :exe ":tabopen ;googlejp " + content.getSelection()<CR>
 noremap pw :exe ":tabopen ;wiki " + content.getSelection()<CR>
 noremap pc :exe ":tabopen ;googlecn " + content.getSelection()<CR>
@@ -217,8 +254,7 @@ noremap ,ec :set encoding=EUC-JP<CR>
 noremap ,eu :set encoding=UTF-8<CR>
 noremap ,eg :set encoding=GB2312<CR>
 " Buffer Settings - Buffer快速打开特定网站
-noremap vm :buffer! gmail<CR>
-noremap vr :buffer! google reader<CR>
+noremap vg :buffer! google<CR>
 noremap vt :buffer! tabtter<CR>
 " twitterator.js
 noremap <leader>tt :tw<space>
@@ -237,6 +273,9 @@ noremap <C-w>w :panorama<space>
 map <silent> ,bh :viewSBMComments -t h<CR>
 map <silent> ,bd :viewSBMComments -t d<CR>
 map <silent> ,bl :viewSBMComments -t l<CR>
+" Multi_requester.js
+map <silent> ,mE :exe ":mr gdicen-cn " + content.getSelection()<CR>
+map <silent> ,mC :exe ":mr gdiccn-en " + content.getSelection()<CR>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""
 ""  Autocommand Settings - 开机自启动脚本设置  ""
@@ -249,7 +288,7 @@ command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
 " Fix the Completion BUG - 修正补全BUG
 "js CommandLine.Completions.prototype.__defineGetter__('caret', function() commandline._commandWidget.selectionEnd)
 " Complete Settings
-lazy set complete=tslH
+lazy set complete=tTlsH
 "
 "" -- feedSomeKeys_3.js Settings --
 "
@@ -267,7 +306,10 @@ lazy fmaps -u='rememberthemilk\.com' -events=keypress j k tt,t y,c c,y pu,1 pi,2
 lazy fmaps -u='.*twicli\.html' -events=keypress n,j m,k x tt,m z,<esc> f o,i u r,e pp,p R,r T,q c,d v,o
 " tabtter
 lazy fmaps -u='tabtter\.jp' -events=vkeydown n,k m,j h M,m tt,n . C u /
-"
+" google plus --require google+ command
+"lazy fmaps -u='plus\.google\.com' -events=keypress G gg + gh gP gp gc s n i c
+"lazy fmaps -u='plus\.google\.com' -events=vkeypress n,j m,k
+
 "" -- Open Link Background in Specified Sites - 特定网站上打开网址默认后台打开 --
 "
 autocmd LocationChange '^(?!https?://(mail\.google\.com/(mail|a)/|(reader\.livedoor|fastladder|www\.google)\.com/reader/|b\.hatena\.ne\.jp/(?!(entry|articles|guide))))' :set! browser.tabs.loadDivertedInBackground=false
@@ -285,8 +327,9 @@ qmark r https://www.google.com/reader
 qmark d http://127.0.0.1:4080
 qmark v https://github.com/vimpr/vimperator-plugins
 qmark u http://www.tumblr.com/dashboard
-qmark g http://www.rememberthemilk.com
-
+qmark g file:///home/sephiroth/Profiles/software/tiddlywiki/GTD/mgsd.html
+qmark w file:///home/sephiroth/Profiles/software/tiddlywiki/Wiki/default/default.html
+qmark h resource://recallmonkey-at-prospector-dot-labs-dot-mozilla-recallmonkey-data/dashboard.html
 "" -- Abbreviation Settings - 热字符串切换 --
 "
 abbrev -j .title      '"' + buffer.title + '"'
